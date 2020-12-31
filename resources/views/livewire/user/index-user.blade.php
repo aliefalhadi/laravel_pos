@@ -38,7 +38,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if($daftarUser != [])
+                                @if($daftarUser->count()>0)
                                 @foreach ($daftarUser as $key=>$item)
                                 <tr>
                                     <td>{{ $key+1 }}</td>
@@ -71,7 +71,7 @@
                                 @endforeach
                                 @else
                                 <tr>
-                                    <td colspan="4">Data tidak ada</td>
+                                    <td colspan="4" class="text-center">Data tidak ada</td>
                                 </tr>
                                 @endif
                             </tbody>
@@ -81,9 +81,14 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 Menampilkan
-                                                {{$page == 1 ? 1 : ($page-1)+$limit }}
+                                                @if ($totalData >1)
+                                                {{ $page == 1 ? 1 : ($page-1)+$limit }}
+                                                @else
+                                                0
+                                                @endif
+
                                                 -
-                                                {{$page == 1 ? $totalDataPage < $limit ? $totalDataPage : $limit : (($page-1)*$limit)+$totalDataPage }}
+                                                {{$totalData < 1 ? 0 : (($page-1)*$limit)+$totalDataPage }}
                                                 dari
                                                 {{$totalData}} data
                                             </div>
@@ -96,13 +101,30 @@
                                                     <option value="100">100</option>
                                                 </select>
 
+
                                                 <button class="dv-footer-btn" wire:click="prevPage">
                                                     &laquo;
                                                 </button>
-                                                <input type=" text" class="dv-footer-input" wire:model.lazy="page" />
+
+
+                                                <div
+                                                    style="border: 1px solid black; width: 50px; text-align: center;  display:inline-block">
+                                                    {{ $page }}
+                                                </div>
+                                                {{-- <input type=" text" class="dv-footer-input" wire:model.lazy="page" /> --}}
+
+                                                @if ((($page-1)*$limit)+$totalDataPage == $totalData)
+                                                <button class="dv-footer-btn" disabled>
+                                                    &raquo;
+                                                </button>
+                                                @else
                                                 <button class="dv-footer-btn" wire:click="nextPage">
                                                     &raquo;
                                                 </button>
+                                                @endif
+
+
+
                                             </div>
                                         </div>
                                     </td>

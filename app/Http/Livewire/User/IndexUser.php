@@ -63,7 +63,6 @@ class IndexUser extends Component
 
        $daftarUser = $daftarUser->limit($this->limit)->offset(($this->page-1)*$this->limit)->get();
        $totalDataPage = $daftarUser->count();
-
        
         return view('livewire.user.index-user', [
             'daftarUser' => $daftarUser,
