@@ -26,3 +26,6 @@ Route::get("/user", \App\Http\Livewire\User\IndexUser::class)->name(
 Route::get("/kategori", \App\Http\Livewire\Kategori\IndexKategori::class)->name(
     "kategori.index"
 );
+Route::get("/satuan", \App\Http\Livewire\Satuan\IndexSatuan::class)->name(
+    "satuan.index"
+);
