@@ -21,6 +21,8 @@
     <link href="{{asset('assets/assets/css/tables/table-basic.css')}} " rel="stylesheet" type="text/css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <link href="{{asset('css/custom-theme.css')}} " rel="stylesheet" type="text/css" />
+
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
     <!-- END GLOBAL MANDATORY STYLES -->
     @livewireStyles
 
@@ -317,12 +319,19 @@
 
     <script type="text/javascript">
         window.livewire.on('showModal', () => {
-            console.log('jjjjjj');
             $('#exampleModal').modal('show');
         });
 
         window.livewire.on('hideModal', () => {
             $('#exampleModal').modal('hide');
+        });
+
+        window.livewire.on('showModalEdit', () => {
+            $('#exampleModalEdit').modal('show');
+        });
+
+        window.livewire.on('hideModalEdit', () => {
+            $('#exampleModalEdit').modal('hide');
         });
 
         window.addEventListener('alert', event => {

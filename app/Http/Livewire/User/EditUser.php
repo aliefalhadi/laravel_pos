@@ -6,50 +6,51 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
-class TambahUser extends Component
+class EditUser extends Component
 {
+    public $idUser;
     public $name;
     public $email;
-    public $password;
     public $type = "admin";
 
-    public function resetForm()
+    protected $listeners = ["updateData"];
+
+    public function updateData($data)
     {
-        $this->name = "";
-        $this->email = "";
-        $this->password = "";
-        $this->type = "admin";
+        $this->idUser = $data["id"];
+        $this->name = $data["name"];
+        $this->email = $data["email"];
+        $this->type = $data["type"];
     }
 
-    public function create()
+    public function update()
     {
         $this->validate([
             "name" => "required",
-            "email" => "required|email|unique:users,email",
-            "password" => "required",
+            "email" => "required|email|unique:users,email," . $this->idUser,
             "type" => "required",
         ]);
 
-        User::create([
+        $user = User::where(["id" => $this->idUser])->first();
+
+        $user->update([
             "name" => $this->name,
             "email" => $this->email,
-            "password" => Hash::make($this->name),
             "type" => $this->type,
         ]);
+
         $this->dispatchBrowserEvent("alert", [
             "type" => "success",
-            "message" => "Berhasil menambahkan data",
+            "message" => "Berhasil edit data",
         ]);
 
-        $this->emit("hideModal");
-
-        $this->resetForm();
+        $this->emit("hideModalEdit");
 
         $this->emit("refreshData");
     }
 
     public function render()
     {
-        return view("livewire.user.tambah-user");
+        return view("livewire.user.edit-user");
     }
 }
