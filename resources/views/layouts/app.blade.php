@@ -17,10 +17,12 @@
     <link href="{{asset('assets/bootstrap/css/bootstrap.min.css')}} " rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/assets/css/plugins.css')}} " rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/assets/css/scrollspyNav.css')}} " rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/plugins/select2/select2.min.css')}} ">
     <link href="{{asset('assets/assets/css/forms/theme-checkbox-radio.css')}} " rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/assets/css/tables/table-basic.css')}} " rel="stylesheet" type="text/css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <link href="{{asset('css/custom-theme.css')}} " rel="stylesheet" type="text/css" />
+    @stack('styles')
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -193,6 +195,20 @@
                         </a>
                     </li>
 
+                    <li class="menu single-menu ">
+                        <a href="{{route('produk.index')}}">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-home">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                <span>Data Produk</span>
+                            </div>
+                        </a>
+                    </li>
+
 
                     <li class="menu single-menu">
                         <a href="#menu" data-toggle="collapse" aria-expanded="false"
@@ -333,6 +349,7 @@
     <script src="{{asset('assets/assets/js/libs/jquery-3.1.1.min.js')}}"></script>
     <script src="{{asset('assets/bootstrap/js/popper.min.js')}}"></script>
     <script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/autoNumeric.js')}}"></script>
     <script src="{{asset('assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
     <script src="{{asset('assets/assets/js/app.js')}}"></script>
     <script>
@@ -343,8 +360,9 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{asset('assets/plugins/highlight/highlight.pack.js')}}"></script>
+    <script src="{{asset('assets/plugins/select2/select2.min.js')}}"></script>
     <script src="{{asset('assets/assets/js/custom.js')}}"></script>
-
+    @stack('custom-scripts')
     <script type="text/javascript">
         window.livewire.on('showModal', () => {
             $('#exampleModal').modal('show');

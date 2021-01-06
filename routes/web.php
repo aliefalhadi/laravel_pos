@@ -29,3 +29,14 @@ Route::get("/kategori", \App\Http\Livewire\Kategori\IndexKategori::class)->name(
 Route::get("/satuan", \App\Http\Livewire\Satuan\IndexSatuan::class)->name(
     "satuan.index"
 );
+
+Route::get("/produk", \App\Http\Livewire\Produk\IndexProduk::class)->name(
+    "produk.index"
+);
+
+Route::get(
+    "/produk/tambah",
+    \App\Http\Livewire\Produk\TambahProduk::class
+)->name("produk.tambah");
+
+Route::get("/select2", \App\Http\Livewire\Shared\RupiahInput::class);
