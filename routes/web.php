@@ -39,4 +39,9 @@ Route::get(
     \App\Http\Livewire\Produk\TambahProduk::class
 )->name("produk.tambah");
 
+Route::get(
+    "/produk/edit/{idProduk}",
+    \App\Http\Livewire\Produk\EditProduk::class
+)->name("produk.edit");
+
 Route::get("/select2", \App\Http\Livewire\Shared\RupiahInput::class);

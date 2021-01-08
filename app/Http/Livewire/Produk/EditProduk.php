@@ -7,19 +7,22 @@ use App\Models\Produk;
 use App\Models\Satuan;
 use Livewire\Component;
 
-class TambahProduk extends Component
+class EditProduk extends Component
 {
     public $kodeBarcode;
     public $namaProduk;
     public $idKategori;
+    public $kategori;
     public $idSatuan;
+    public $satuan;
     public $hargaModal;
     public $hargaJual;
     public $keterangan;
     public $daftarKategoriArr = [];
     public $daftarSatuanArr = [];
+    public $idProduk;
 
-    public function mount()
+    public function mount($idProduk)
     {
         $daftarSatuan = Satuan::all();
         $daftarKategori = Kategori::all();
@@ -37,6 +40,18 @@ class TambahProduk extends Component
                 "value" => $dt->nama_satuan,
             ];
         }
+
+        $modelProduk = Produk::where(["id_produk" => $idProduk])->first();
+        $this->idProduk = $modelProduk->id_produk;
+        $this->kodeBarcode = $modelProduk->kode_barcode;
+        $this->namaProduk = $modelProduk->nama_produk;
+        $this->kategori = $modelProduk->kategori->nama_kategori;
+        $this->idKategori = $modelProduk->id_kategori;
+        $this->satuan = $modelProduk->satuan->nama_satuan;
+        $this->idSatuan = $modelProduk->id_satuan;
+        $this->hargaModal = $modelProduk->harga_modal;
+        $this->hargaJual = $modelProduk->harga_jual;
+        $this->keterangan = $modelProduk->keterangan;
     }
 
     protected $listeners = [
@@ -75,7 +90,7 @@ class TambahProduk extends Component
         $this->keterangan = "";
     }
 
-    public function create($type)
+    public function update()
     {
         $this->validate([
             "kodeBarcode" => "required",
@@ -86,7 +101,8 @@ class TambahProduk extends Component
             "hargaJual" => "required",
         ]);
 
-        Produk::create([
+        $modelProduk = Produk::where(["id_produk" => $this->idProduk])->first();
+        $modelProduk->update([
             "kode_barcode" => $this->kodeBarcode,
             "nama_produk" => $this->namaProduk,
             "id_kategori" => $this->idKategori,
@@ -101,15 +117,11 @@ class TambahProduk extends Component
             ->session()
             ->flash("success", "Berhasil menambahkan produk.");
 
-        if ($type == "index") {
-            return redirect()->to("/produk");
-        } elseif ($type == "tambah") {
-            return redirect()->to("/produk/tambah");
-        }
+        return redirect()->to("/produk");
     }
 
     public function render()
     {
-        return view("livewire.produk.tambah-produk");
+        return view("livewire.produk.edit-produk");
     }
 }

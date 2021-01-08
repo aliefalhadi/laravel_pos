@@ -26,8 +26,13 @@ class Produk extends Model
         return $this->belongsTo("App\Models\Kategori", "id_kategori");
     }
 
-    public function getHargaModalAttribute($value)
+    public function getHargaModalRupiahAttribute()
     {
-        return "Rp " . number_format($value, 2, ",", ".");
+        return "Rp " . number_format($this->harga_modal, 2, ",", ".");
+    }
+
+    public function getHargaJualRupiahAttribute()
+    {
+        return "Rp " . number_format($this->harga_jual, 2, ",", ".");
     }
 }

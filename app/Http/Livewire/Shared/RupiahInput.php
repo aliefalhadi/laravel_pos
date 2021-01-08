@@ -8,14 +8,18 @@ class RupiahInput extends Component
 {
     public $listenFunction = "";
     public $placeholder = "";
+    public $initialValue = "";
 
-    public function mount($listenFunction, $placeholder)
+    public function mount($listenFunction, $placeholder, $initialValue = "")
     {
         $this->placeholder = $placeholder;
         $this->listenFunction = $listenFunction;
+        $this->initialValue = $initialValue;
     }
     public function formatRupiah($value)
     {
+        $value = str_replace("Rp. ", "", $value);
+        $value = str_replace(".", "", $value);
         $this->emit($this->listenFunction, $value);
     }
     public function render()

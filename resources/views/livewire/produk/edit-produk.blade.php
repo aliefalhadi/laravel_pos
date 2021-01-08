@@ -21,25 +21,25 @@
                         </div>
                         <div class="form-group col-lg-6">
                             <label for="kode_barcode">Kategori</label>
-                            <livewire:shared.select2 :options="$daftarKategoriArr" :listenFunction="'selectedKategori'" :placeholder="'Pilih kategori'" />
+                            <livewire:shared.select2 :options="$daftarKategoriArr" :listenFunction="'selectedKategori'" :placeholder="'Pilih kategori'" :initialValue="$kategori" />
                             @error('idKategori')<small id="sh-text1" class="form-text"
                                 style="color:red">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group col-lg-6">
                             <label for="kode_barcode">Satuan</label>
-                            <livewire:shared.select2 :options="$daftarSatuanArr" :listenFunction="'selectedSatuan'"  :placeholder="'Pilih satuan'"/>
+                            <livewire:shared.select2 :options="$daftarSatuanArr" :listenFunction="'selectedSatuan'"  :placeholder="'Pilih satuan'" :initialValue="$satuan"/>
                             @error('idSatuan')<small id="sh-text1" class="form-text"
                                 style="color:red">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group col-lg-6">
                             <label for="kode_barcode">Harga Modal</label>
-                            <livewire:shared.rupiah-input :placeholder="'Masukkan harga modal'" :listenFunction="'inputRupiahHargaModal'"/>
+                            <livewire:shared.rupiah-input :placeholder="'Masukkan harga modal'" :listenFunction="'inputRupiahHargaModal'" :initialValue="$hargaModal"/>
                             @error('hargaModal')<small id="sh-text1" class="form-text"
                                 style="color:red">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group col-lg-6">
                             <label for="kode_barcode">Harga Jual</label>
-                            <livewire:shared.rupiah-input :placeholder="'Masukkan harga jual'" :listenFunction="'inputRupiahHargaJual'"/>
+                            <livewire:shared.rupiah-input :placeholder="'Masukkan harga jual'" :listenFunction="'inputRupiahHargaJual'" :initialValue="$hargaJual"/>
                             @error('hargaJual')<small id="sh-text1" class="form-text"
                                 style="color:red">{{ $message }}</small>@enderror
                         </div>
@@ -52,8 +52,7 @@
                         </div>
                         <div class="col-lg-12 text-right mt-2">
                             <button class="btn btn-outline-default btn-rounded">Batal</button>
-                            <button class="btn btn-outline-primary btn-rounded" wire:click="create('index')">Simpan</button>
-                            <button class="btn btn-primary btn-rounded" wire:click="create('tambah')">Simpan & Tambah</button>
+                            <button class="btn btn-outline-primary btn-rounded" wire:click="update()">Simpan</button>
                         </div>
                     </div>
                 </div>
@@ -73,7 +72,6 @@ $(".basic").on('change', function(){
     console.log($(this).val());
 });
 
-$('.rupiah').autoNumeric('init');
 </script>
 @endpush
 

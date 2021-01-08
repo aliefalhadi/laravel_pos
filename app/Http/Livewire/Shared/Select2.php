@@ -30,11 +30,16 @@ class Select2 extends Component
     //     ],
     // ];
 
-    public function mount($options, $listenFunction, $placeholder)
-    {
+    public function mount(
+        $options,
+        $listenFunction,
+        $placeholder,
+        $initialValue = ""
+    ) {
         $this->options = $options;
         $this->listenFunction = $listenFunction;
         $this->placeholder = $placeholder;
+        $this->select = $initialValue;
     }
 
     public function selected($option)

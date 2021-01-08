@@ -6,6 +6,7 @@
                     <h6 class="card-title">Data Produk</h6>
                 </div>
                 <div class="card-body">
+                
                     <a href="{{route('produk.tambah')}}"  class="btn btn-primary mb-2" >Tambah data</a>
                     <div class="">
                        
@@ -17,16 +18,17 @@
                                         {!! $sortField == 'nama_produk' ? $sort =='desc' ? '<i class="fas fa-angle-down"></i>'
                                         : '<i class="fas fa-angle-up"></i>' :'' !!}
                                     </th>
+                                    <th wire:click="changeSort('nama_kategori')">Kategori
+                                        {!! $sortField == 'nama_kategori' ? $sort =='desc' ? '<i class="fas fa-angle-down"></i>'
+                                        : '<i class="fas fa-angle-up"></i>' :'' !!}
+                                    </th>
 
                                     <th wire:click="changeSort('nama_satuan')">Satuan
                                         {!! $sortField == 'nama_satuan' ? $sort =='desc' ? '<i class="fas fa-angle-down"></i>'
                                         : '<i class="fas fa-angle-up"></i>' :'' !!}
                                     </th>
 
-                                    <th wire:click="changeSort('nama_kategori')">Kategori
-                                        {!! $sortField == 'nama_kategori' ? $sort =='desc' ? '<i class="fas fa-angle-down"></i>'
-                                        : '<i class="fas fa-angle-up"></i>' :'' !!}
-                                    </th>
+                                   
 
                                     <th wire:click="changeSort('harga_jual')">Harga Jual
                                         {!! $sortField == 'harga_jual' ? $sort =='desc' ? '<i class="fas fa-angle-down"></i>'
@@ -41,11 +43,12 @@
                                         <input type="text" wire:model.debounce.500ms="searchNamaProduk" class="form-control">
                                     </td>
                                     <td>
-                                        <input type="text" wire:model.debounce.500ms="searchNamaSatuan" class="form-control">
-                                    </td>
-                                    <td>
                                         <input type="text" wire:model.debounce.500ms="searchNamaKategori" class="form-control">
                                     </td>
+                                    <td>
+                                        <input type="text" wire:model.debounce.500ms="searchNamaSatuan" class="form-control">
+                                    </td>
+                                   
                                     <td>
                                         <input type="text" wire:model.debounce.500ms="searchHargaModal" class="form-control">
                                     </td>
@@ -62,12 +65,13 @@
                                 <tr>
                                     <td>{{ $key+1 }}</td>
                                     <td>{{$item->nama_produk}}</td>
-                                    <td>{{$item->satuan->nama_satuan}}</td>
                                     <td>{{$item->kategori->nama_kategori}}</td>
-                                    <td>{{$item->harga_modal}}</td>
+                                    <td>{{$item->satuan->nama_satuan}}</td>
+                                    
+                                    <td>{{$item->harga_jual_rupiah}}</td>
                                     <td class="text-center">
                                         <ul class="table-controls">
-                                            <li><a href="javascript:void(0);"
+                                            <li><a href="{{route('produk.edit', ['idProduk'=>$item->id_produk])}}"
                                                     wire:click ="editData({{$item}})"
                                                     class="btn btn-outline-primary btn-rounded btn-sm"
                                                     data-toggle="tooltip" data-placement="top" title="Edit">
@@ -151,3 +155,20 @@
         </div>
     </div>
 </div>
+
+@if (session()->has('success'))
+@push('custom-scripts')
+<script>
+   function notif(){
+       console.log('asdsa');
+    toastr['success']('',
+    "{{ session("success") }}");
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+            }
+   }
+   notif();
+</script>
+@endpush
+@endif

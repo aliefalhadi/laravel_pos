@@ -100,6 +100,17 @@ class IndexProduk extends Component
                 );
         }
 
+        if ($this->searchNamaSatuan != "") {
+            $this->page = 1;
+            $daftarData = $daftarData
+                ->join("satuan", "satuan.id_satuan", "=", "produk.id_satuan")
+                ->where(
+                    "satuan.nama_satuan",
+                    "like",
+                    "%" . $this->searchNamaSatuan . "%"
+                );
+        }
+
         $total = $daftarData->count();
 
         $daftarData = $daftarData
