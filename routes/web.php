@@ -44,4 +44,13 @@ Route::get(
     \App\Http\Livewire\Produk\EditProduk::class
 )->name("produk.edit");
 
+Route::get("/gudang", \App\Http\Livewire\Gudang\IndexGudang::class)->name(
+    "gudang.index"
+);
+
+Route::get(
+    "/gudang/{idGudang}/stok",
+    \App\Http\Livewire\StokGudang\IndexStokGudang::class
+)->name("stok-gudang.index");
+
 Route::get("/select2", \App\Http\Livewire\Shared\RupiahInput::class);
