@@ -12,12 +12,7 @@
                 </div>
                 <form wire:submit.prevent="update">
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="exampleFormControlInput1">Produk</label>
-                            <livewire:shared.select2 :options="$daftarProduk" :listenFunction="'selectedProduk'" :placeholder="'Pilih produk'" :initialValue="$produk" />
-                            @error('idProduk')<small id="sh-text1" class="form-text"
-                                style="color:red">{{ $message }}</small>@enderror
-                        </div>
+                        
                         <div class="form-group">
                             <label for="exampleFormControlInput1">Minimal Stok Produk</label>
                             <input wire:model.lazy="minStok" type="text" placeholder="Masukkan minimal stok" class="form-control">
