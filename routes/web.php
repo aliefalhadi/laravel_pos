@@ -53,4 +53,17 @@ Route::get(
     \App\Http\Livewire\StokGudang\IndexStokGudang::class
 )->name("stok-gudang.index");
 
+Route::get(
+    "/transaksi",
+    \App\Http\Livewire\Transaksi\IndexTransaksi::class
+)->name("transaksi.index");
+Route::get(
+    "/transaki/{idGudang}",
+    \App\Http\Livewire\Transaksi\DaftarTransaksiGudang::class
+)->name("transaksi.daftar");
+Route::get(
+    "/transaki/{idGudang}/tambah",
+    \App\Http\Livewire\Transaksi\TambahTransaksiGudang::class
+)->name("transaksi.tambah");
+
 Route::get("/select2", \App\Http\Livewire\Shared\RupiahInput::class);
