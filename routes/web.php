@@ -58,12 +58,17 @@ Route::get(
     \App\Http\Livewire\Transaksi\IndexTransaksi::class
 )->name("transaksi.index");
 Route::get(
-    "/transaki/{idGudang}",
+    "/transaksi/{idGudang}",
     \App\Http\Livewire\Transaksi\DaftarTransaksiGudang::class
 )->name("transaksi.daftar");
 Route::get(
-    "/transaki/{idGudang}/tambah",
+    "/transaksi/{idGudang}/tambah",
     \App\Http\Livewire\Transaksi\TambahTransaksiGudang::class
 )->name("transaksi.tambah");
+
+Route::get(
+    "/transaksi/detail/{idTransaksi}",
+    \App\Http\Livewire\Transaksi\DetailTransaksi::class
+)->name("transaksi.detail");
 
 Route::get("/select2", \App\Http\Livewire\Shared\RupiahInput::class);

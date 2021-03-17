@@ -12,7 +12,7 @@
                         <div class="col-lg-2">
                             <label for="">&nbsp;</label>
                             <p class="">
-                                <button wire:click="addProduk" class="btn btn-modal btn-primary">Lihat daftar produk</button>
+                                <button wire:click="lihatProduk" class="btn btn-modal btn-primary">Lihat daftar produk</button>
                             </p>
                         </div>
 
@@ -26,7 +26,7 @@
                         <div class="col-lg-12">
                             <hr>
                             <div style="overflow-y: auto; height: 280px;">
-                                <table class="table table-bordered table-striped">
+                                <table class="table table-bordered ">
                                     <thead>
                                         <tr>
                                             <td class="text-center">No</td>
@@ -78,29 +78,32 @@
                         <div class="col-lg-12">
                             <div class="row">
                                 <div class="col-lg-3">
-                                    <label for="">Diskon</label>
-                                    <input type="text" id="diskonBayar" name="" class="form-control">
+                                    <label for="">Diskon (F2)</label>
+                                    <livewire:shared.rupiah-input :placeholder="'Masukkan total bayar'" :listenFunction="'inputRupiahDiskonBayar'" :initialValue="$diskonBayar" :idEl="'i-diskon'" />
                                 </div>
                                 <div class="col-lg-3">
-                                    <label for="">Bayar</label>
-                                    <input type="text" name="" id="totalBayar" class="form-control">
+                                    <label for="">Bayar (F3)</label>
+                                    <livewire:shared.rupiah-input :placeholder="'Masukkan total bayar'" :listenFunction="'inputRupiahTotalBayar'" :initialValue="$totalBayar" :idEl="'i-bayar'" />
+                                    <!-- <input type="text" name="" id="totalBayar" class="form-control" wire:model.debounce.500ms="totalBayar" > -->
                                 </div>
                                 <div class="col-lg-3 text-center">
                                     <label for="">Kembalian</label>
-                                    <h3 id="kembalian">Rp 0</h3>
+                                    <h3 id="kembalian">{{"Rp " . number_format($totalKembalian, 2, ",", ".")}}</h3>
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-3" x-data="{  }">
                                     <label for="">&nbsp;</label>
-                                    <a href="" id="btn-selesai" class="btn  btn-primary btn-block">
+                                   <!-- <a href="" id="btn-selesai" class="btn  btn-primary btn-block">
                                         <span class="glyphicon glyphicon-shopping-cart"></span> Selesai
-                                    </a>
-                                    <form action="" id="formTransaksi" method="post">
-                                        <input type="hidden" name="_csrf" value="">
-                                        <input type="hidden" name="data_transaksi" id="fData_transaksi">
-                                        <input type="hidden" name="total" id="fTotal">
-                                        <input type="hidden" name="totalBayar" id="fTotalBayar">
-                                        <input type="hidden" name="diskonBayar" id="fDiskonBayar">
-                                    </form>
+                                    </a>  -->
+                                    <div>
+                                        <button x-on:click="confirm('apakah anda yakin?') ? $wire.call('create') :console.log('gagal')" class="btn btn-primary btn-block"
+                                    data-toggle="tooltip" data-placement="top" title="hapus" id="btn-selesai"> <span class="glyphicon glyphicon-shopping-cart"></span> Selesai (F12)</button>
+                                        <div wire:loading>
+                                            Processing...
+                                        </div>
+                                    </div>
+                                    
+                
                                 </div>
                             </div>
                         </div>
@@ -109,8 +112,57 @@
             </div>
         </div>
     </div>
+
+    @livewire('transaksi.lihat-daftar-produk')
 </div>
 
-@push('custom-scripts')
 
+
+@if (session()->has('success'))
+@push('custom-scripts')
+<script>
+   function notif(){
+       console.log('asdsa');
+    toastr['success']('',
+    "{{ session("success") }}");
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+            }
+   }
+   notif();
+</script>
+@endpush
+@endif
+
+@push('custom-scripts')
+<script>
+   $(document).on('keydown',function(e) {
+    
+
+    //f1
+    if(e.which == 112) {
+        e.preventDefault();
+        $('#i-produk').focus();
+    }
+
+    //f2
+    if(e.which == 113) {
+        e.preventDefault();
+        $('#i-diskon').focus();
+    }
+
+    //f3
+    if(e.which == 114) {
+        e.preventDefault();
+        $('#i-bayar').focus();
+    }
+
+    //f12
+    if(e.which == 123) {
+        e.preventDefault();
+        $('#btn-selesai').click();
+    }
+});
+</script>
 @endpush

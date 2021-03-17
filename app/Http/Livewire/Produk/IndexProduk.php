@@ -14,6 +14,7 @@ class IndexProduk extends Component
     public $sort = "desc";
     public $sortField = "produk.created_at";
     public $c = "";
+    public $searchKodeBarcode;
     public $searchNamaProduk;
     public $searchNamaSatuan;
     public $searchNamaKategori;
@@ -75,6 +76,14 @@ class IndexProduk extends Component
     public function render()
     {
         $daftarData = Produk::orderBy($this->sortField, $this->sort);
+        if ($this->searchKodeBarcode != "") {
+            $this->page = 1;
+            $daftarData->where(
+                "kode_barcode",
+                "like",
+                "%" . $this->searchKodeBarcode . "%"
+            );
+        }
         if ($this->searchNamaProduk != "") {
             $this->page = 1;
             $daftarData->where(

@@ -14,10 +14,7 @@
                             <thead>
                                 <tr>
                                     <th>No </th>
-                                    <th wire:click="changeSort('id_kasir')">Kasir
-                                        {!! $sortField == 'id_kasir' ? $sort =='desc' ? '<i class="fas fa-angle-down"></i>'
-                                        : '<i class="fas fa-angle-up"></i>' :'' !!}
-                                    </th>
+                                
                                     <th wire:click="changeSort('tgl_transaksi')">Tanggal Transaksi
                                         {!! $sortField == 'tgl_transaksi' ? $sort =='desc' ? '<i class="fas fa-angle-down"></i>'
                                         : '<i class="fas fa-angle-up"></i>' :'' !!}
@@ -32,14 +29,15 @@
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td>
-                                        <input type="text" wire:model.debounce.500ms="searchKasir" class="form-control">
-                                    </td>
+                                    
                                     <td>
                                         <input type="text" wire:model.debounce.500ms="searchTglTransaksi" class="form-control">
                                     </td>
                                     <td>
-                                        <input type="text" wire:model.debounce.500ms="searchStatus" class="form-control">
+                                        <select wire:model.debounce.500ms="searchStatus" class="form-control">
+                                            <option value="1">Selesai</option>
+                                            <option value="2">Hutang</option>
+                                        </select>
                                     </td>
                                 
                                     <td>
@@ -53,13 +51,11 @@
                                 @foreach ($daftarData as $key=>$item)
                                 <tr>
                                     <td>{{ $key+1 }}</td>
-                                    <td>{{$item->id_kasir}}</td>
                                     <td>{{$item->tgl_transaksi}}</td>
-                                    <td>{{$item->status}}</td>
+                                    <td class="text-center"><span class="badge badge-success">{{$item->status == 1 ? 'SELESAI':'HUTANG'}}</span></td>
                                     <td class="text-center">
                                         <ul class="table-controls">
-                                            <li><a href=""
-                                                    wire:click ="editData({{$item}})"
+                                            <li><a href="{{route('transaksi.detail', ['idTransaksi'=>$item->id_transaksi])}}"
                                                     class="btn btn-outline-primary btn-rounded btn-sm"
                                                     data-toggle="tooltip" data-placement="top" title="Edit">
                                                     lihat detail

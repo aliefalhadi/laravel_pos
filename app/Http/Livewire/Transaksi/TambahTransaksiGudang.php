@@ -3,6 +3,10 @@
 namespace App\Http\Livewire\Transaksi;
 
 use App\Models\Produk;
+use App\Models\StokGudang;
+use App\Models\Transaksi;
+use App\Models\TransaksiDetail;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class TambahTransaksiGudang extends Component
@@ -13,15 +17,20 @@ class TambahTransaksiGudang extends Component
     public $idSatuan;
     public $hargaModal;
     public $hargaJual;
+    public $idGudang;
     public $keterangan;
     public $totalTransaksi = 0;
+    public $totalBayar = 0;
+    public $totalKembalian = 0;
+    public $diskonBayar = 0;
     public $daftarKategoriArr = [];
     public $daftarProdukTransaksi = [];
     public $daftarSatuanArr = [];
     public $searchProduk;
 
-    public function mount()
+    public function mount($idGudang)
     {
+        $this->idGudang = $idGudang;
         // $daftarSatuan = Satuan::all();
         // $daftarKategori = Kategori::all();
 
@@ -42,9 +51,22 @@ class TambahTransaksiGudang extends Component
 
     protected $listeners = [
         "selectedSatuan",
-        "inputRupiahHargaModal",
-        "inputRupiahHargaJual",
+        "inputRupiahTotalBayar",
+        "inputRupiahDiskonBayar",
     ];
+
+    public function inputRupiahTotalBayar($value)
+    {
+        $this->totalBayar = $value;
+        $this->bayar();
+    }
+
+    public function inputRupiahDiskonBayar($value)
+    {
+        $this->diskonBayar = $value;
+        $this->totalTransaksi = $this->totalTransaksi - $this->diskonBayar;
+        $this->bayar();
+    }
 
     public function addProduk()
     {
@@ -67,6 +89,7 @@ class TambahTransaksiGudang extends Component
                     "kode_barcode" => $produk->kode_barcode,
                     "nama_produk" => $produk->nama_produk,
                     "harga_jual" => $produk->harga_jual,
+                    "harga_modal" => $produk->harga_modal,
                     "qty" => 1,
                 ];
                 $this->daftarProdukTransaksi[] = $pr;
@@ -95,6 +118,21 @@ class TambahTransaksiGudang extends Component
         foreach ($this->daftarProdukTransaksi as $dt) {
             $this->totalTransaksi += $dt["qty"] * $dt["harga_jual"];
         }
+        if (empty($this->daftarProdukTransaksi)) {
+            $this->totalBayar = 0;
+            $this->diskonBayar = 0;
+            $this->totalKembalian = 0;
+        }
+    }
+
+    public function bayar()
+    {
+        $this->totalKembalian = $this->totalBayar -  $this->totalTransaksi;
+    }
+
+    public function lihatProduk()
+    {
+        $this->emit("showModal");
     }
 
     public function resetForm()
@@ -108,37 +146,42 @@ class TambahTransaksiGudang extends Component
         $this->keterangan = "";
     }
 
-    public function create($type)
+    public function create()
     {
-        $this->validate([
-            "kodeBarcode" => "required",
-            "namaProduk" => "required",
-            "idKategori" => "required",
-            "idSatuan" => "required",
-            "hargaModal" => "required",
-            "hargaJual" => "required",
+        $idTransaksi = "TS" . date("mdHis");
+        Transaksi::create([
+            "id_transaksi" => $idTransaksi,
+            "id_gudang" => $this->idGudang,
+            "id_kasir" => Auth::user()->id,
+            "tgl_transaksi" => date("Y-m-d H:i:s"),
+            "diskon_bayar" => $this->diskonBayar,
+            "status" => 1,
         ]);
 
-        Produk::create([
-            "kode_barcode" => $this->kodeBarcode,
-            "nama_produk" => $this->namaProduk,
-            "id_kategori" => $this->idKategori,
-            "id_satuan" => $this->idSatuan,
-            "harga_modal" => $this->hargaModal,
-            "harga_jual" => $this->hargaJual,
-            "keterangan" => $this->keterangan,
-        ]);
+        //detail transaksi
+        foreach ($this->daftarProdukTransaksi as $dt) {
+            TransaksiDetail::create([
+                "id_transaksi" => $idTransaksi,
+                "id_produk" => $dt["id_produk"],
+                "harga_modal" => $dt["harga_modal"],
+                "harga" => $dt["harga_jual"],
+                "quantity" => $dt["qty"],
+            ]);
+            //kuramgi stok barang
+            $modelStokGudang = StokGudang::where(["id_gudang" => $this->idGudang, "id_produk" => $dt["id_produk"]])->first();
+            $stok = $modelStokGudang->stok -  $dt["qty"];
+            $modelStokGudang->update([
+                "stok" => $stok,
+            ]);
+        }
 
         // session()->flash("message", "Post successfully updated.");
         request()
             ->session()
-            ->flash("success", "Berhasil menambahkan produk.");
+            ->flash("success", "Berhasil menambahkan transaksi.");
 
-        if ($type == "index") {
-            return redirect()->to("/produk");
-        } elseif ($type == "tambah") {
-            return redirect()->to("/produk/tambah");
-        }
+
+        return redirect()->to("/transaksi/" . $this->idGudang . "/tambah");
     }
 
     public function render()

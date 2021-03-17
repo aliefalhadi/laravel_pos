@@ -14,6 +14,10 @@
                             <thead>
                                 <tr>
                                     <th>No </th>
+                                    <th wire:click="changeSort('kode_barcode')">Kode Produk
+                                        {!! $sortField == 'kode_barcode' ? $sort =='desc' ? '<i class="fas fa-angle-down"></i>'
+                                        : '<i class="fas fa-angle-up"></i>' :'' !!}
+                                    </th>
                                     <th wire:click="changeSort('nama_produk')">Nama Produk
                                         {!! $sortField == 'nama_produk' ? $sort =='desc' ? '<i class="fas fa-angle-down"></i>'
                                         : '<i class="fas fa-angle-up"></i>' :'' !!}
@@ -40,6 +44,9 @@
                                 <tr>
                                     <td></td>
                                     <td>
+                                        <input type="text" wire:model.debounce.500ms="searchKodeBarcode" class="form-control">
+                                    </td>
+                                    <td>
                                         <input type="text" wire:model.debounce.500ms="searchNamaProduk" class="form-control">
                                     </td>
                                     <td>
@@ -64,6 +71,7 @@
                                 @foreach ($daftarData as $key=>$item)
                                 <tr>
                                     <td>{{ $key+1 }}</td>
+                                    <td>{{$item->kode_barcode}}</td>
                                     <td>{{$item->nama_produk}}</td>
                                     <td>{{$item->kategori->nama_kategori}}</td>
                                     <td>{{$item->satuan->nama_satuan}}</td>

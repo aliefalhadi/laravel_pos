@@ -83,6 +83,16 @@ class DaftarTransaksiGudang extends Component
             "id_gudang" => $this->idGudang,
         ])->orderBy($this->sortField, $this->sort);
 
+        if ($this->searchStatus != "") {
+            $this->page = 1;
+            $daftarData->where(
+                "status",
+                "like",
+                "%" . $this->searchStatus . "%"
+            );
+        }
+
+
         $total = $daftarData->count();
 
         $daftarData = $daftarData

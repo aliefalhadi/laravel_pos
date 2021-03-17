@@ -1,5 +1,5 @@
 <div x-data="rupiahInput()" x-init="formatRupiah({{$initialValue}})" >
-   <input type="text" placeholder="{{$placeholder}}" x-model="input"  class="form-control" x-on:keyup="formatRupiah($event.target.value)" x-on:change="$wire.call('formatRupiah', input)">
+   <input type="text" placeholder="{{$placeholder}}" x-model="input"  class="form-control" x-on:keyup="formatRupiah($event.target.value)" x-on:change="$wire.call('formatRupiah', input)" id="{{$idEl}}">
 </div>
 
 @push('custom-scripts')
